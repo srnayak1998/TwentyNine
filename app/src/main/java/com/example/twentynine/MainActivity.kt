@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.twentynine.game.DeckManager
 import com.example.twentynine.model.Player
+import com.example.twentynine.ui.screens.GameScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-
+            GameScreen(players)+
         }
     }
 }
