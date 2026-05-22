@@ -43,6 +43,14 @@ fun GameScreen(
             fontSize = 20.sp
         )
 
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text = viewModel.message,
+            color = Color.Yellow,
+            fontSize = 18.sp
+        )
+
         Spacer(modifier = Modifier.height(30.dp))
 
         Column(
@@ -72,7 +80,7 @@ fun GameScreen(
                     ) {
 
                         Text(
-                            text = played.first,
+                            text = "Player ${played.first + 1}",
                             color = Color.White
                         )
 

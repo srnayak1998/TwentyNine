@@ -7,16 +7,19 @@ enum class Suit {
     SPADES
 }
 
-enum class Rank(val points: Int) {
+enum class Rank(
+    val points: Int,
+    val power: Int
+) {
 
-    JACK(3),
-    NINE(2),
-    ACE(1),
-    TEN(1),
-    KING(0),
-    QUEEN(0),
-    EIGHT(0),
-    SEVEN(0)
+    JACK(3, 8),
+    NINE(2, 7),
+    ACE(1, 6),
+    TEN(1, 5),
+    KING(0, 4),
+    QUEEN(0, 3),
+    EIGHT(0, 2),
+    SEVEN(0, 1)
 }
 
 data class Card(
