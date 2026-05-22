@@ -8,6 +8,8 @@ import com.example.twentynine.game.DeckManager
 import com.example.twentynine.model.Player
 import com.example.twentynine.ui.screens.GameScreen
 
+import com.example.twentynine.viewmodel.GameViewModel
+
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +34,12 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            GameScreen(players)+
+
+            val gameViewModel = GameViewModel()
+
+            gameViewModel.setupPlayers(players)
+
+            GameScreen(gameViewModel)
         }
     }
 }

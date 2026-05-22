@@ -6,20 +6,24 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.twentynine.model.Player
 import com.example.twentynine.ui.components.CardView
+import com.example.twentynine.viewmodel.GameViewModel
 
 @Composable
 fun GameScreen(
-    players: List<Player>
+    viewModel: GameViewModel
 ) {
 
-    val currentPlayer = players[0]
+    val currentPlayer =
+        viewModel.players[viewModel.currentPlayerIndex]
 
     Column(
         modifier = Modifier
@@ -37,20 +41,10 @@ fun GameScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
-            text = currentPlayer.name,
+            text = "Current Turn: ${currentPlayer.name}",
             color = Color.White,
             fontSize = 20.sp
         )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        LazyRow {
-
-            items(currentPlayer.hand) { card ->
-
-                CardView(card = card)
-            }
-        }
 
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -62,11 +56,25 @@ fun GameScreen(
             contentAlignment = Alignment.Center
         ) {
 
-            Text(
-                text = "Game Table",
-                color = Color.White,
-                fontSize = 28.sp
-            )
+            viewModel.playedCard?.let { played ->
+
+                CardView(card = played)
+            }
+        }
+
+        LazyRow {
+
+            items(currentPlayer.hand) { card ->
+
+                CardView(
+                    card = card,
+
+                    onClick = {
+
+                        viewModel.playCard(card)
+                    }
+                )
+            }
         }
     }
 }
