@@ -6,9 +6,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,19 +43,46 @@ fun GameScreen(
             fontSize = 20.sp
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
 
-            contentAlignment = Alignment.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            viewModel.playedCard?.let { played ->
+            Text(
+                text = "Played Cards",
+                color = Color.White,
+                fontSize = 22.sp
+            )
 
-                CardView(card = played)
+            Spacer(modifier = Modifier.height(20.dp))
+
+            LazyRow {
+
+                items(viewModel.playedCards) { played ->
+
+                    Column(
+                        horizontalAlignment =
+                            Alignment.CenterHorizontally
+                    ) {
+
+                        Text(
+                            text = played.first,
+                            color = Color.White
+                        )
+
+                        CardView(card = played.second)
+                    }
+
+                    Spacer(
+                        modifier = Modifier.width(12.dp)
+                    )
+                }
             }
         }
 
