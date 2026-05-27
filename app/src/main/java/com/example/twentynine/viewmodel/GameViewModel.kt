@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.twentynine.model.Card
 import com.example.twentynine.model.Player
+import com.example.twentynine.model.Suit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,13 @@ class GameViewModel : ViewModel() {
 
     var message by mutableStateOf("")
 
+    var teamAScore by mutableIntStateOf(0)
+
+    var teamBScore by mutableIntStateOf(0)
+
+    var trumpSuit by mutableStateOf(Suit.SPADES)
+    var gameFinished by mutableStateOf(false)
+
     fun setupPlayers(playerList: List<Player>) {
 
         if (players.isEmpty()) {
@@ -35,10 +43,13 @@ class GameViewModel : ViewModel() {
 
     fun playCard(card: Card) {
 
+        if (gameFinished) {
+
+            return
+        }
+
         val currentPlayer =
             players[currentPlayerIndex]
-
-        // FOLLOW SUIT VALIDATION
 
         if (leadSuit != null) {
 
@@ -90,9 +101,24 @@ class GameViewModel : ViewModel() {
             val currentCard = played.second
             val winningCard = winningPair.second
 
+            val currentIsTrump =
+                currentCard.suit == trumpSuit
+
+            val winningIsTrump =
+                winningCard.suit == trumpSuit
+
             if (
+                currentIsTrump &&
+                !winningIsTrump
+            ) {
+
+                winningPair = played
+            }
+
+            else if (
                 currentCard.suit ==
                 winningCard.suit &&
+
                 currentCard.rank.power >
                 winningCard.rank.power
             ) {
@@ -112,8 +138,40 @@ class GameViewModel : ViewModel() {
                 it.second.rank.points
             }
 
-        message =
-            "${winnerPlayer.name} won trick (+$trickPoints points)"
+        // TEAM SCORE UPDATE
+
+        if (
+            winnerIndex == 0 ||
+            winnerIndex == 2
+        ) {
+
+            teamAScore += trickPoints
+        }
+
+        else {
+
+            teamBScore += trickPoints
+        }
+
+        if (teamAScore >= 6) {
+
+            message = "🎉 Team A Wins Match!"
+
+            gameFinished = true
+        }
+
+        else if (teamBScore >= 6) {
+
+            message = "🎉 Team B Wins Match!"
+
+            gameFinished = true
+        }
+
+        else {
+
+            message =
+                "${winnerPlayer.name} won trick (+$trickPoints points)"
+        }
 
         currentPlayerIndex = winnerIndex
 

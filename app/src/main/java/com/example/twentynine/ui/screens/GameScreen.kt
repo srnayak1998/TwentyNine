@@ -14,10 +14,17 @@ import androidx.compose.ui.unit.sp
 import com.example.twentynine.ui.components.CardView
 import com.example.twentynine.viewmodel.GameViewModel
 
+
+
 @Composable
 fun GameScreen(
     viewModel: GameViewModel
 ) {
+
+    if (viewModel.players.isEmpty()) {
+
+        return
+    }
 
     val currentPlayer =
         viewModel.players[viewModel.currentPlayerIndex]
@@ -33,6 +40,32 @@ fun GameScreen(
             text = "29 Card Game",
             color = Color.White,
             fontSize = 24.sp
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text = "Trump Suit: ${viewModel.trumpSuit}",
+            color = Color.Cyan,
+            fontSize = 18.sp
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text =
+                "Team A (P1 & P3): ${viewModel.teamAScore}",
+
+            color = Color.White,
+            fontSize = 18.sp
+        )
+
+        Text(
+            text =
+                "Team B (P2 & P4): ${viewModel.teamBScore}",
+
+            color = Color.White,
+            fontSize = 18.sp
         )
 
         Spacer(modifier = Modifier.height(20.dp))
