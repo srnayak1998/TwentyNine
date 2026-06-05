@@ -186,4 +186,20 @@ class GameViewModel : ViewModel() {
             message = ""
         }
     }
+
+    fun restartGame() {
+
+        teamAScore = 0
+        teamBScore = 0
+
+        playedCards.clear()
+
+        leadSuit = null
+
+        message = ""
+
+        currentPlayerIndex = 0
+
+        gameFinished = false
+    }
 }
